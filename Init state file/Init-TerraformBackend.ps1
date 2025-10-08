@@ -1,19 +1,46 @@
+# param(
+#     # --- Azure context ---
+#     [Parameter(Mandatory=$true)]  [string] $SubscriptionId      = "XXX-SUBSCRIPTION-ID",
+#     [Parameter(Mandatory=$true)]  [string] $Location            = "westeurope",   # e.g. "westeurope" / "northeurope"
+#     [Parameter(Mandatory=$true)]  [string] $ResourceGroupName   = "XXX-tfstate-rg",
+#     [Parameter(Mandatory=$true)]  [string] $StorageAccountName  = "xxxtfstate0001", # must be globally unique, 3-24 lower-case letters & digits
+#     [Parameter(Mandatory=$true)]  [string] $ContainerName       = "tfstate",
+#     [Parameter(Mandatory=$true)]  [string] $StateFileName       = "XXX-project-name.tfstate",
+
+#     # --- Auth/RBAC options ---
+#     [switch] $GrantBlobDataContributorToCurrentIdentity, # Assigns Storage Blob Data Contributor to the signed-in principal on the storage account
+#     [string] $PrincipalObjectId = ""                     # Optional explicit principal (user/service principal/MI) to assign role to
+
+#     # --- (Optional) Legacy auth with access key ---
+#     ,[switch] $UseAccessKeyMode
+# )
 param(
     # --- Azure context ---
-    [Parameter(Mandatory=$true)]  [string] $SubscriptionId      = "XXX-SUBSCRIPTION-ID",
-    [Parameter(Mandatory=$true)]  [string] $Location            = "westeurope",   # e.g. "westeurope" / "northeurope"
-    [Parameter(Mandatory=$true)]  [string] $ResourceGroupName   = "XXX-tfstate-rg",
-    [Parameter(Mandatory=$true)]  [string] $StorageAccountName  = "xxxtfstate0001", # must be globally unique, 3-24 lower-case letters & digits
-    [Parameter(Mandatory=$true)]  [string] $ContainerName       = "tfstate",
-    [Parameter(Mandatory=$true)]  [string] $StateFileName       = "XXX-project-name.tfstate",
+    [Parameter(Mandatory=$true)]
+    [string] $SubscriptionId,
+    [string] $Location,
+    [string] $ResourceGroupName,
+    [Parameter(Mandatory=$true)]
+    [string] $StorageAccountName,
+    [string] $ContainerName,
+    [string] $StateFileName,
 
     # --- Auth/RBAC options ---
-    [switch] $GrantBlobDataContributorToCurrentIdentity, # Assigns Storage Blob Data Contributor to the signed-in principal on the storage account
-    [string] $PrincipalObjectId = ""                     # Optional explicit principal (user/service principal/MI) to assign role to
+    [switch] $GrantBlobDataContributorToCurrentIdentity,
+    [string] $PrincipalObjectId,
 
     # --- (Optional) Legacy auth with access key ---
-    ,[switch] $UseAccessKeyMode
+    [switch] $UseAccessKeyMode
 )
+# --- Set defaults if not provided ---
+
+if (-not $Location)           { $Location          = "westeurope" }
+if (-not $ResourceGroupName)  { $ResourceGroupName = "XXX-tfstate-rg" }
+if (-not $StorageAccountName) { $StorageAccountName= "xxxtfstate0001" }
+if (-not $ContainerName)      { $ContainerName     = "tfstate" }
+if (-not $StateFileName)      { $StateFileName     = "XXX-project-name.tfstate" }
+if (-not $PrincipalObjectId)  { $PrincipalObjectId = "" }
+
 
 # Helper
 function Write-Info($msg) { Write-Output "[Init] $msg" }
@@ -82,4 +109,4 @@ if ($UseAccessKeyMode) {
 $backend | Out-File -FilePath "./backend.hcl" -Encoding utf8 -Force
 
 Write-Output "Backend written to ${PWD}\backend.hcl"
-Write-Output "Now run: terraform init -backend-config=backend.hcl"
+Write-Host "`e[92mNow run: terraform init -backend-config='backend.hcl'`e[0m"
