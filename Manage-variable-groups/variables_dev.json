@@ -1,0 +1,11 @@
+{
+  "name": "test-variables",
+  "description": "Managed by script",
+  "type": "Vsts",
+  "variables": {
+    "ENV":      { "value": "devs",              "isSecret": false },
+    "MySecret": { "value": "XXX_SECRET_VALUE", "isSecret": true  },
+    "API_URL":  { "value": "https://api.xxx.local", "isSecret": false }
+
+  }
+}

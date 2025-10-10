@@ -1,19 +1,3 @@
-# param(
-#     # --- Azure context ---
-#     [Parameter(Mandatory=$true)]  [string] $SubscriptionId      = "XXX-SUBSCRIPTION-ID",
-#     [Parameter(Mandatory=$true)]  [string] $Location            = "westeurope",   # e.g. "westeurope" / "northeurope"
-#     [Parameter(Mandatory=$true)]  [string] $ResourceGroupName   = "XXX-tfstate-rg",
-#     [Parameter(Mandatory=$true)]  [string] $StorageAccountName  = "xxxtfstate0001", # must be globally unique, 3-24 lower-case letters & digits
-#     [Parameter(Mandatory=$true)]  [string] $ContainerName       = "tfstate",
-#     [Parameter(Mandatory=$true)]  [string] $StateFileName       = "XXX-project-name.tfstate",
-
-#     # --- Auth/RBAC options ---
-#     [switch] $GrantBlobDataContributorToCurrentIdentity, # Assigns Storage Blob Data Contributor to the signed-in principal on the storage account
-#     [string] $PrincipalObjectId = ""                     # Optional explicit principal (user/service principal/MI) to assign role to
-
-#     # --- (Optional) Legacy auth with access key ---
-#     ,[switch] $UseAccessKeyMode
-# )
 param(
     # --- Azure context ---
     [Parameter(Mandatory=$true)]
